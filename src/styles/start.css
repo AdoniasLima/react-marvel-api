@@ -1,0 +1,26 @@
+div.container {
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+div.container h1.title-logo {
+    color: #202020;
+    margin-bottom: 5%;
+    font-size: 40pt;
+}
+
+div.container a.link-start {
+    text-decoration: none;
+    color: rgb(255, 60, 60);
+    font-size: 17pt;
+    font-weight: bold;
+}
+
+div.container a.link-start:hover {
+    text-decoration: underline;
+}
