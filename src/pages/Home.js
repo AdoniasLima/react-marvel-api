@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/api";
 import generateLink from "../services/generate";
+import Loading from "../components/Loading";
 
 import "../styles/home.css";
 
 function Home(){
 
     const [characters, setCharacters] = useState([]);
+    const [loadingScreen, setLoadingScreen] = useState(true);
 
     useEffect(() => {
         api.get("/characters?limit=18&" + generateLink()).then(response => {
             setCharacters(response.data.data.results);
+        }).then(function(){
+            setLoadingScreen(false);
         });
     }, []);
 
@@ -38,6 +42,7 @@ function Home(){
                     );
                 })}
             </div>
+            {loadingScreen === true && <Loading />}
         </div>
     );
 }
