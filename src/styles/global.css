@@ -12,6 +12,10 @@ body, input, button, textarea {
     font-size: 18px;
 }
 
+button {
+    outline:none;
+}
+
 img {
     width: 100px;
     height: 100px;
