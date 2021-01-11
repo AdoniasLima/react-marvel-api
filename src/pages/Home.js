@@ -1,22 +1,13 @@
-import React, { useEffect, useState } from "react";
-import api from "../services/api";
-import generateLink from "../services/generate";
-import Loading from "../components/Loading";
+import React from "react";
+import { Switch, Route, useRouteMatch, Link } from "react-router-dom";
 
 import "../styles/home.css";
+import Characters from "./Characters";
+import Favorites from "./Favorites";
 
 function Home(){
 
-    const [characters, setCharacters] = useState([]);
-    const [loadingScreen, setLoadingScreen] = useState(true);
-
-    useEffect(() => {
-        api.get("/characters?limit=18&" + generateLink()).then(response => {
-            setCharacters(response.data.data.results);
-        }).then(function(){
-            setLoadingScreen(false);
-        });
-    }, []);
+    let { path, url } = useRouteMatch();
 
     return(
         <div className="home-section">
@@ -24,25 +15,20 @@ function Home(){
                 <div>
                     <h1 className="title-logo">Marvel's API</h1>
                 </div>
-                <div>
-                    
+                <div className="buttons">
+                    <Link to={`${url}`}><button className="color-red">All</button></Link><Link to={`${url}/favorites`}><button className="color-blue">Favorites</button></Link>
                 </div>
             </div>
             <div className="home-cards">
-                {characters.map(function(value, index){
-                    return(
-                        <div key={index} className="home-card-character">
-                            <div className="home-card-character-img">
-                                <img src={`${value.thumbnail.path + "." + value.thumbnail.extension}`} alt={value.name} />
-                            </div>
-                            <div className="home-card-character-name">
-                                <h3>{value.name}</h3>
-                            </div>
-                        </div>
-                    );
-                })}
+                <Switch>
+                    <Route exact path={path}>
+                        <Characters />
+                    </Route>
+                    <Route path={`${path}/favorites`}>
+                        <Favorites />
+                    </Route>
+                </Switch>
             </div>
-            {loadingScreen === true && <Loading />}
         </div>
     );
 }
