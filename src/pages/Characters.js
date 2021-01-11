@@ -3,6 +3,8 @@ import api from "../services/api";
 import generateLink from "../services/generate";
 import Loading from "../components/Loading";
 
+import "../styles/characters.css";
+
 function Characters(){
 
     const [characters, setCharacters] = useState([]);
@@ -26,6 +28,9 @@ function Characters(){
                         </div>
                         <div className="home-card-character-name">
                             <h3>{value.name}</h3>
+                        </div>
+                        <div className="home-card-character-option">
+                            <button className="color-blue">Add favorite</button>
                         </div>
                     </div>
                 );

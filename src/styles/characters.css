@@ -1,0 +1,44 @@
+div.home-cards div.home-card-character {
+    width: 100%;
+    height: 150px;
+    margin-top: 10px;
+    display: flex;
+}
+
+div.home-cards div.home-card-character div.home-card-character-img{
+    width: 20%;
+    height: 100%;
+    background-color: black;
+}
+
+div.home-cards div.home-card-character div.home-card-character-img img{
+    width: 100%;
+    height: 100%;
+}
+
+div.home-cards div.home-card-character div.home-card-character-name{
+    width: 60%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.home-cards div.home-card-character div.home-card-character-option{
+    width: 20%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.home-cards div.home-card-character div.home-card-character-option button{
+    padding: 5px 15px;
+    font-size: 11pt;
+    margin-left: 3px;
+    margin-right: 3px;
+    cursor: pointer;
+    border: none;
+    color: white;
+    border-radius: 5px;
+}
