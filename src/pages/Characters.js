@@ -1,12 +1,15 @@
 import { React, useEffect, useState } from "react";
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import api from "../services/api";
 import generateLink from "../services/generate";
 import Loading from "../components/Loading";
 
 import "../styles/characters.css";
 
-function Characters(props){
+function Characters(){
+
+    const ids_favorites = useSelector(state => state.favorites.ids);
+    const dispatch = useDispatch();
 
     const [characters, setCharacters] = useState([]);
     const [loadingScreen, setLoadingScreen] = useState(true);
@@ -25,7 +28,7 @@ function Characters(props){
                 value.favorite = true;
             } else if(id != null && id === value.id && action === "remove"){
                 value.favorite = false;
-            } else if(props.ids.indexOf(value.id) !== -1){
+            } else if(ids_favorites.indexOf(value.id) !== -1){
                 value.favorite = true;
             } else {
                 value.favorite = false;
@@ -36,12 +39,18 @@ function Characters(props){
     }
 
     const handleAddFavorite = function(id){
-        props.setId(id)
+        dispatch({
+            type: "SET_ID",
+            payload: {id: id}
+        });
         handleFavorites(characters, "add", id);
     }
 
     const handleRemoveFavorite = function(id){
-        props.unsetId(id);
+        dispatch({
+            type: "UNSET_ID",
+            payload: {id: id}
+        });
         handleFavorites(characters, "remove", id);
     }
 
@@ -89,4 +98,4 @@ const mapDispatchToProps = function(dispatch){
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Characters);
+export default Characters;
