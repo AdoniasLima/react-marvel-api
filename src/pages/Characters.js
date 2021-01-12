@@ -79,23 +79,4 @@ function Characters(){
     );
 }
 
-const mapStateToProps = function(state){
-    return {
-        ids: state.favorites.ids
-    };
-}
-
-const mapDispatchToProps = function(dispatch){
-    return {
-        setId: (id) => dispatch({
-            type: "SET_ID",
-            payload: {id: id}
-        }),
-        unsetId: (id) => dispatch({
-            type: "UNSET_ID",
-            payload: {id: id}
-        })
-    }
-}
-
 export default Characters;
