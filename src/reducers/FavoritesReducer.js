@@ -1,16 +1,16 @@
 const initialState = {
-    favorites_id : []
+    ids : []
 };
 
 const FavoritesReducer = function(state = initialState, action){
     switch (action.type) {
-        case "SET_FAVORITE":
-            state.favorites_id.push(state.payload.id);
-            break;
+        case "SET_ID":
+            return {...state, ids: [...state.ids, action.payload.id]};
+        case "UNSET_ID":
+            return {...state, ids: state.ids.filter(item => action.payload.id !== item)};
         default:
-            break;
+            return state;
     }
-    return state;
 }
 
 export default FavoritesReducer;

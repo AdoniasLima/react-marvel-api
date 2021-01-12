@@ -1,22 +1,49 @@
 import { React, useEffect, useState } from "react";
+import { connect } from 'react-redux';
 import api from "../services/api";
 import generateLink from "../services/generate";
 import Loading from "../components/Loading";
 
 import "../styles/characters.css";
 
-function Characters(){
+function Characters(props){
 
     const [characters, setCharacters] = useState([]);
     const [loadingScreen, setLoadingScreen] = useState(true);
 
     useEffect(() => {
         api.get("/characters?limit=18&" + generateLink()).then(response => {
-            setCharacters(response.data.data.results);
+            handleFavorites(response.data.data.results, "add");
         }).then(function(){
             setLoadingScreen(false);
         });
     }, []);
+
+    const handleFavorites = async function(list, action, id = null){
+        let newList = await list.map(function(value, index){
+            if(id != null && id === value.id && action === "add"){
+                value.favorite = true;
+            } else if(id != null && id === value.id && action === "remove"){
+                value.favorite = false;
+            } else if(props.ids.indexOf(value.id) !== -1){
+                value.favorite = true;
+            } else {
+                value.favorite = false;
+            }
+            return value;
+        });
+        setCharacters(newList);
+    }
+
+    const handleAddFavorite = function(id){
+        props.setId(id)
+        handleFavorites(characters, "add", id);
+    }
+
+    const handleRemoveFavorite = function(id){
+        props.unsetId(id);
+        handleFavorites(characters, "remove", id);
+    }
 
     return(
         <div>
@@ -30,7 +57,10 @@ function Characters(){
                             <h3>{value.name}</h3>
                         </div>
                         <div className="home-card-character-option">
-                            <button className="color-blue">Add favorite</button>
+                            {value.favorite
+                                ? <button className="color-red" onClick={(e) => handleRemoveFavorite(value.id)}>Remove favorite</button>
+                                : <button className="color-blue" onClick={(e) => handleAddFavorite(value.id)}>Add favorite</button>
+                            }
                         </div>
                     </div>
                 );
@@ -40,4 +70,23 @@ function Characters(){
     );
 }
 
-export default Characters;
+const mapStateToProps = function(state){
+    return {
+        ids: state.favorites.ids
+    };
+}
+
+const mapDispatchToProps = function(dispatch){
+    return {
+        setId: (id) => dispatch({
+            type: "SET_ID",
+            payload: {id: id}
+        }),
+        unsetId: (id) => dispatch({
+            type: "UNSET_ID",
+            payload: {id: id}
+        })
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Characters);
