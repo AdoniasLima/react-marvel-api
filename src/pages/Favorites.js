@@ -19,15 +19,18 @@ function Favorites(){
     }, []);
 
     const handleListFavorites = async function(){
+
+        let newListFavorites = [...characters];
+
         await ids_favorites.forEach(function(value, index){
             let key = characters.findIndex(item => item.id === value);
             if(key < 0){
                 api.get("/characters/" + value + "?" + generateLink()).then(response => {
-                    //console.log(response.data.data.results[0]);
-                    setCharacters([...characters, response.data.data.results[0]]);
+                    newListFavorites.push(response.data.data.results[0]);
                 });
             }
         });
+        setCharacters(newListFavorites);
     };
 
     return(
