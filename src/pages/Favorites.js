@@ -22,14 +22,17 @@ function Favorites(){
 
         let newListFavorites = [...characters];
 
-        await ids_favorites.forEach(function(value, index){
-            let key = characters.findIndex(item => item.id === value);
+        const promises = ids_favorites.map(async function(value, index){
+            let key = await characters.findIndex(item => item.id === value);
             if(key < 0){
-                api.get("/characters/" + value + "?" + generateLink()).then(response => {
+                await api.get("/characters/" + value + "?" + generateLink()).then(response => {
                     newListFavorites.push(response.data.data.results[0]);
                 });
             }
         });
+
+        await Promise.all(promises);
+
         setCharacters(newListFavorites);
     };
 
