@@ -19,9 +19,7 @@ function Favorites(){
     }, []);
 
     const handleListFavorites = async function(){
-
         let newListFavorites = [...characters];
-
         const promises = ids_favorites.map(async function(value, index){
             let key = await characters.findIndex(item => item.id === value);
             if(key < 0){
@@ -30,11 +28,18 @@ function Favorites(){
                 });
             }
         });
-
         await Promise.all(promises);
-
         setCharacters(newListFavorites);
     };
+
+    const handleRemoveFavorite = function(id){
+        dispatch({
+            type: "UNSET_ID",
+            payload: {id: id}
+        });
+        let newListFavorites = characters.filter(value => value.id !== id);
+        setCharacters(newListFavorites);
+    }
 
     return(
         <div>
@@ -48,7 +53,7 @@ function Favorites(){
                             <h3>{value.name}</h3>
                         </div>
                         <div className="home-card-character-option">
-                            <button className="color-red">Remove favorite</button>
+                            <button className="color-red" onClick={(e) => handleRemoveFavorite(value.id)}>Remove favorite</button>
                         </div>
                     </div>
                 );
