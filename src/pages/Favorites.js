@@ -53,6 +53,13 @@ function Favorites(){
                     </div>
                 );
             })}
+            {
+                (characters.length === 0 && loadingScreen === false) 
+                && 
+                <div className="text-show">
+                    <h3>No favorites were added!</h3>
+                </div>
+            }
             {loadingScreen === true && <Loading />}
         </div>
     );
